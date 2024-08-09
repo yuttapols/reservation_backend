@@ -37,7 +37,9 @@ public class SecurityConfig {
     		AppConstants.PROJECT_VERSION + "/authentication/**",
             "/v3/api-docs/**",
             "/swagger-ui/**",
-            "/error"
+            "/error",
+            AppConstants.PROJECT_VERSION +"/user/checkUsreName",
+            AppConstants.PROJECT_VERSION +"/user/saveCustomer",
     };
 	
     @Bean

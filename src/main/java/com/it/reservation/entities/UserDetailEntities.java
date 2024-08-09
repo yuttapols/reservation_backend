@@ -54,9 +54,6 @@ public class UserDetailEntities {
     @Column(name = "user_image_name", length = 50)
     private String userImageName;
 
-    @Column(name = "user_image_path", length = 100)
-    private String userImagePath;
-
     @Basic
     @Column(name = "user_image_blob", columnDefinition = "LONGBLOB")
     private byte[] userImageBlob;

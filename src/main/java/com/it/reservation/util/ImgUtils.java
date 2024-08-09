@@ -1,11 +1,8 @@
 package com.it.reservation.util;
 
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -23,57 +20,57 @@ public class ImgUtils {
 
     public static final int BITE_SIZE = 4 * 1024;
 
-    public static void moveFile(File file, String fileName, String pathType) throws IOException {
-        if (null != file) {
-            Path path = FileSystems.getDefault().getPath("").toAbsolutePath();
-            String outputPathStr = path + File.separator + Constants.PATH_IMAGES.PATH_FOLDER_UPLOAD + File.separator + Constants.PATH_IMAGES.PATH_FOLDER_INPUT + File.separator + pathType
-                    + File.separator + fileName;
-            File fileOut = new File(outputPathStr);
-            file.renameTo(fileOut);
-        }
-    }
-
-    public static void saveFile(MultipartFile file, String fileName, String pathType) throws IOException {
-        Path path = FileSystems.getDefault().getPath("").toAbsolutePath();
-        if (null != file) {
-            String outputPathStr = path + File.separator + Constants.PATH_IMAGES.PATH_FOLDER_UPLOAD + File.separator + Constants.PATH_IMAGES.PATH_FOLDER_INPUT + File.separator + pathType
-                    + File.separator + fileName;
-            try (FileOutputStream fout = new FileOutputStream(outputPathStr)) {
-                fout.write(file.getBytes());
-                fout.close();
-            } catch (Exception e) {
-                // TODO: handle exception
-            }
-        }
-    }
-
-    public static String getPathInput(String pathType) throws IOException {
-
-        return File.separator + Constants.PATH_IMAGES.PATH_FOLDER_UPLOAD + File.separator + Constants.PATH_IMAGES.PATH_FOLDER_INPUT + File.separator + pathType + File.separator;
-    }
-
-    public static String getPathOutput(String pathType) throws IOException {
-
-        return File.separator + Constants.PATH_IMAGES.PATH_FOLDER_UPLOAD + File.separator + Constants.PATH_IMAGES.PATH_FOLDER_OUTPUT + File.separator + pathType + File.separator;
-    }
-
-    public static void deleteFile(String fileName, String pathType) throws IOException {
-        if (StringUtils.isNotBlank(fileName)) {
-            Path path = FileSystems.getDefault().getPath("").toAbsolutePath();
-            String filePath = path + File.separator + Constants.PATH_IMAGES.PATH_FOLDER_UPLOAD + File.separator + Constants.PATH_IMAGES.PATH_FOLDER_INPUT + File.separator + pathType
-                    + File.separator + fileName;
-
-            Path filePaths = Paths.get(filePath);
-            // Set<PosixFilePermission> permissions = PosixFilePermissions.fromString("rwxrwxrwx");
-            try {
-                // Files.setPosixFilePermissions(filePaths, permissions);
-                Files.deleteIfExists(filePaths);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
-        }
-    }
+//    public static void moveFile(File file, String fileName, String pathType) throws IOException {
+//        if (null != file) {
+//            Path path = FileSystems.getDefault().getPath("").toAbsolutePath();
+//            String outputPathStr = path + File.separator + Constants.PATH_IMAGES.PATH_FOLDER_UPLOAD + File.separator + Constants.PATH_IMAGES.PATH_FOLDER_INPUT + File.separator + pathType
+//                    + File.separator + fileName;
+//            File fileOut = new File(outputPathStr);
+//            file.renameTo(fileOut);
+//        }
+//    }
+//
+//    public static void saveFile(MultipartFile file, String fileName, String pathType) throws IOException {
+//        Path path = FileSystems.getDefault().getPath("").toAbsolutePath();
+//        if (null != file) {
+//            String outputPathStr = path + File.separator + Constants.PATH_IMAGES.PATH_FOLDER_UPLOAD + File.separator + Constants.PATH_IMAGES.PATH_FOLDER_INPUT + File.separator + pathType
+//                    + File.separator + fileName;
+//            try (FileOutputStream fout = new FileOutputStream(outputPathStr)) {
+//                fout.write(file.getBytes());
+//                fout.close();
+//            } catch (Exception e) {
+//                // TODO: handle exception
+//            }
+//        }
+//    }
+//
+//    public static String getPathInput(String pathType) throws IOException {
+//
+//        return File.separator + Constants.PATH_IMAGES.PATH_FOLDER_UPLOAD + File.separator + Constants.PATH_IMAGES.PATH_FOLDER_INPUT + File.separator + pathType + File.separator;
+//    }
+//
+//    public static String getPathOutput(String pathType) throws IOException {
+//
+//        return File.separator + Constants.PATH_IMAGES.PATH_FOLDER_UPLOAD + File.separator + Constants.PATH_IMAGES.PATH_FOLDER_OUTPUT + File.separator + pathType + File.separator;
+//    }
+//
+//    public static void deleteFile(String fileName, String pathType) throws IOException {
+//        if (StringUtils.isNotBlank(fileName)) {
+//            Path path = FileSystems.getDefault().getPath("").toAbsolutePath();
+//            String filePath = path + File.separator + Constants.PATH_IMAGES.PATH_FOLDER_UPLOAD + File.separator + Constants.PATH_IMAGES.PATH_FOLDER_INPUT + File.separator + pathType
+//                    + File.separator + fileName;
+//
+//            Path filePaths = Paths.get(filePath);
+//            // Set<PosixFilePermission> permissions = PosixFilePermissions.fromString("rwxrwxrwx");
+//            try {
+//                // Files.setPosixFilePermissions(filePaths, permissions);
+//                Files.deleteIfExists(filePaths);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//
+//        }
+//    }
 //     public static void copyFile(File original, String fileNameClone, String pathType) throws IOException {
 //         if (StringUtils.isNotBlank(fileNameClone)) {
 //             Path path = FileSystems.getDefault().getPath("").toAbsolutePath();
@@ -174,19 +171,19 @@ public class ImgUtils {
         return fileName;
     }
 
-    public static void saveFileV2(MultipartFile file, String fileName, String pathType) throws IOException {
-
-        if (null != file) {
-            String outputPathStr = File.separator + Constants.PATH_IMAGES.PATH_FOLDER_UPLOAD + File.separator + Constants.PATH_IMAGES.PATH_FOLDER_INPUT + File.separator + pathType
-                    + File.separator + fileName;
-            try (FileOutputStream fout = new FileOutputStream(outputPathStr)) {
-                fout.write(file.getBytes());
-                fout.close();
-            } catch (Exception e) {
-                // TODO: handle exception
-            }
-        }
-    }
+//    public static void saveFileV2(MultipartFile file, String fileName, String pathType) throws IOException {
+//
+//        if (null != file) {
+//            String outputPathStr = File.separator + Constants.PATH_IMAGES.PATH_FOLDER_UPLOAD + File.separator + Constants.PATH_IMAGES.PATH_FOLDER_INPUT + File.separator + pathType
+//                    + File.separator + fileName;
+//            try (FileOutputStream fout = new FileOutputStream(outputPathStr)) {
+//                fout.write(file.getBytes());
+//                fout.close();
+//            } catch (Exception e) {
+//                // TODO: handle exception
+//            }
+//        }
+//    }
 
     public static void deleteFileV2(String fileName, String path) throws IOException {
         if (StringUtils.isNotBlank(fileName)) {

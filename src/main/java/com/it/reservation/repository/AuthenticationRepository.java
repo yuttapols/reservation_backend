@@ -1,8 +1,10 @@
 package com.it.reservation.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -16,4 +18,14 @@ public interface AuthenticationRepository extends JpaRepository<AuthenticationEn
 	
 	@Query("select t from AuthenticationEntities t where t.userName =?1")
     Optional<AuthenticationEntities> findByUserName(String userName);
+	
+	@Query("select t from AuthenticationEntities t where t.roleId = 2")
+    public List<AuthenticationEntities> findAllByEmployee();
+	
+	@Query("select t from AuthenticationEntities t where t.roleId = 3")
+    public List<AuthenticationEntities> findAllByCustomer();
+	
+	@Modifying(clearAutomatically = true)
+    @Query("delete from AuthenticationEntities t where t.id = ?1")
+    void deleteByUserId(Long userId);
 }
