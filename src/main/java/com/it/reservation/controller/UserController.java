@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,7 +24,6 @@ import com.it.reservation.payload.CustomerUserAttr;
 import com.it.reservation.service.UserService;
 import com.it.reservation.util.AppConstants;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
@@ -113,11 +113,11 @@ public class UserController extends AbstractCommon{
     @PutMapping(value = ("/saveCustomer"))
     public ResponseEntity<ApiResponse> saveCustomer(HttpServletRequest request, @RequestBody UserDetailReqDTO userDetailDTO) throws Exception {
 
-        CustomerUserAttr userAttr = super.getCustomerUserAttr(request);
+//        CustomerUserAttr userAttr = super.getCustomerUserAttr(request);
         ApiResponse response;
 
         try {
-            response = getOkResponseData(userService.saveCustomer(userAttr, userDetailDTO));
+            response = getOkResponseData(userService.saveCustomer(userDetailDTO));
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }

@@ -27,7 +27,7 @@ public interface UserService {
 
     public void delete(Long userId) throws IOException;
 
-    public Long saveCustomer(CustomerUserAttr userAttr, UserDetailReqDTO userDetailReqDTO) throws Exception;
+    public Long saveCustomer(UserDetailReqDTO userDetailReqDTO) throws Exception;
 
     public String checkUsreName(String userName) throws Exception;
 }

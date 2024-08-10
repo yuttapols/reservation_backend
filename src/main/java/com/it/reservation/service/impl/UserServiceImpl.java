@@ -58,7 +58,7 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	@Transactional(readOnly = true)
+	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
 	public Long updateImageProfile(CustomerUserAttr userAttr, MultipartFile file, Long userId)
 			throws IOException, Exception {
 		Long response = null;
@@ -72,7 +72,7 @@ public class UserServiceImpl implements UserService{
                 userDtEntity.setUserImageBlob(ImgUtils.compressImage(file.getBytes()));
                 userDtEntity.setUserImageName(fileName);
 
-                userDeatilRepository.save(userDtEntity);
+                userDeatilRepository.saveAndFlush(userDtEntity);
                 response = userDtEntity.getId();
             }
         }
@@ -161,7 +161,7 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	@Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-	public Long saveCustomer(CustomerUserAttr userAttr, UserDetailReqDTO userDetailReqDTO) throws Exception {
+	public Long saveCustomer(UserDetailReqDTO userDetailReqDTO) throws Exception {
 		Long response = null;
         if (ObjectUtils.isNotEmpty(userDetailReqDTO)) {
 
@@ -170,12 +170,14 @@ public class UserServiceImpl implements UserService{
             }
 
             AuthenticationEntities authenEntity = new AuthenticationEntities();
+            
+            String customerNo = FunctionUtil.genarateCustomerNo(authenticationRepository.findAllByCustomer().size(), Constants.USER.CUSTOMER_PREFIX);
 
             authenEntity.setUserName(userDetailReqDTO.getUserName());
             authenEntity.setPassword(Md5Util.genarateMd5(userDetailReqDTO.getPassword()));
             authenEntity.setRoleId(Constants.USER.ROLE_CUSTOMER);
             authenEntity.setStatus(Constants.STATUS_NORMAL);
-            authenEntity.setCreateBy(userAttr.getCustomerNo());
+            authenEntity.setCreateBy(customerNo);
             authenEntity.setCreateDate(DateUtil.createTimestmapNow());
 
             authenEntity = authenticationRepository.save(authenEntity);
@@ -184,13 +186,13 @@ public class UserServiceImpl implements UserService{
                 UserDetailEntities userDtEntity = new UserDetailEntities();
 
                 userDtEntity.setUserId(authenEntity.getId());
-                userDtEntity.setCustomerNo(FunctionUtil.genarateCustomerNo(authenticationRepository.findAllByCustomer().size(), Constants.USER.CUSTOMER_PREFIX));
+                userDtEntity.setCustomerNo(customerNo);
                 userDtEntity.setFristName(userDetailReqDTO.getFristName());
                 userDtEntity.setLastName(userDetailReqDTO.getLastName());
                 userDtEntity.setEmail(userDetailReqDTO.getEmail());
                 userDtEntity.setTelephone(userDetailReqDTO.getTelephone());
                 userDtEntity.setStatus(Constants.STATUS_NORMAL);
-                userDtEntity.setCreateBy(userAttr.getCustomerNo());
+                userDtEntity.setCreateBy(customerNo);
                 userDtEntity.setCreateDate(DateUtil.createTimestmapNow());
                 userDeatilRepository.save(userDtEntity);
             }
