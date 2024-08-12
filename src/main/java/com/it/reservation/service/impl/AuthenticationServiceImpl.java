@@ -2,9 +2,7 @@ package com.it.reservation.service.impl;
 
 import java.util.Optional;
 
-import org.apache.commons.lang3.ObjectUtils;
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -13,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import com.it.reservation.dto.response.AuthenticationResDTO;
 import com.it.reservation.dto.response.RefreshTokenDTO;
-import com.it.reservation.dto.response.UserDetailResDTO;
 import com.it.reservation.entities.AuthenticationEntities;
 import com.it.reservation.repository.AuthenticationRepository;
 import com.it.reservation.repository.UserDetailRepository;
@@ -32,7 +29,7 @@ public class AuthenticationServiceImpl implements AuthenticationService{
     UserDetailRepository userDetailRepository;
 
     @Autowired
-    private ModelMapper mapper;
+    ModelMapper mapper;
     
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -56,11 +53,11 @@ public class AuthenticationServiceImpl implements AuthenticationService{
 
             var jwt = jwtService.generateToken(user);
 
-            UserDetailResDTO userDetail = null;
-            if (ObjectUtils.isNotEmpty(user)) {
-                userDetail = mapper.map(userDetailRepository.findByUserId(user.getId()), new TypeToken<UserDetailResDTO>() {
-                }.getType());
-            }
+//            UserDetailResDTO userDetail = null;
+//            if (ObjectUtils.isNotEmpty(user)) {
+//                userDetail = mapper.map(userDetailRepository.findByUserId(user.getId()), new TypeToken<UserDetailResDTO>() {
+//                }.getType());
+//            }
 
             RefreshTokenDTO refreshTokenDTO = refreshTokenService.createRefreshToken(userName);
 
@@ -69,13 +66,13 @@ public class AuthenticationServiceImpl implements AuthenticationService{
                     .userName(user.getUsername())
                     .status(user.getStatus())
                     .role(user.getRole())
-                    .createBy(user.getCreateBy())
-                    .createDate(user.getCreateDate())
-                    .updateBy(user.getUpdateBy())
-                    .updateDate(user.getUpdateDate())
+//                    .createBy(user.getCreateBy())
+//                    .createDate(user.getCreateDate())
+//                    .updateBy(user.getUpdateBy())
+//                    .updateDate(user.getUpdateDate())
                     .accessToken(jwt)
                     .token(refreshTokenDTO.getToken())
-                    .userDetail(userDetail)
+//                    .userDetail(userDetail)
                     .build();
         }
 
