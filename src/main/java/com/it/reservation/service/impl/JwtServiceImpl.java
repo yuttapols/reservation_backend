@@ -33,7 +33,7 @@ public class JwtServiceImpl implements JwtService{
 
 	private String jwtSigningKey = "413F4428472B4B6250655368566D5970337336763979244226452948404D6351";
 	
-	public static final long JWT_TOKEN_VALIDITY =  1 * 60; // 1 MIN Token Expire
+	public static final long JWT_TOKEN_VALIDITY =  15 * 60; // 1 MIN Token Expire
 	
     @Autowired
     RefreshTokenService refreshTokenService;
