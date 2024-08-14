@@ -20,10 +20,6 @@ public class AuthenticationResDTO {
 	private String updateBy;
 	private Timestamp updateDate;
 	private RoleEntities role;
-	
-	// token
-	private String accessToken;
-    private String token;
     
     //user
     private UserDetailResDTO userDetail;

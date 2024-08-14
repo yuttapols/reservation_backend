@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.it.reservation.dto.request.UserDetailReqDTO;
+import com.it.reservation.dto.response.AuthenticationResDTO;
 import com.it.reservation.dto.response.UserDetailResDTO;
 import com.it.reservation.payload.CustomerUserAttr;
 
@@ -22,6 +23,8 @@ public interface UserService {
     public Long updateProfile(CustomerUserAttr userAttr, UserDetailReqDTO userDetailReqDTO, Long userId) throws Exception;
 
     public UserDetailResDTO getById(Long userId) throws Exception;
+    
+    public AuthenticationResDTO getUserByUserId(Long userId) throws Exception;
 
     public List<UserDetailResDTO> getCustomerAll() throws Exception;
 

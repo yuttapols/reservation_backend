@@ -9,8 +9,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.it.reservation.dto.response.AuthenticationResDTO;
 import com.it.reservation.dto.response.RefreshTokenDTO;
+import com.it.reservation.dto.response.TokenResDTO;
 import com.it.reservation.entities.AuthenticationEntities;
 import com.it.reservation.repository.AuthenticationRepository;
 import com.it.reservation.repository.UserDetailRepository;
@@ -44,7 +44,7 @@ public class AuthenticationServiceImpl implements AuthenticationService{
     RefreshTokenService refreshTokenService;
 
 	@Override
-	public AuthenticationResDTO login(String userName, String password) throws Exception {
+	public TokenResDTO login(String userName, String password) throws Exception {
 		Optional<AuthenticationEntities> userOpt = authenticationRepository.findByUserName(userName);
         if (userOpt.isPresent()) {
         	AuthenticationEntities user = userOpt.get();
@@ -53,26 +53,12 @@ public class AuthenticationServiceImpl implements AuthenticationService{
 
             var jwt = jwtService.generateToken(user);
 
-//            UserDetailResDTO userDetail = null;
-//            if (ObjectUtils.isNotEmpty(user)) {
-//                userDetail = mapper.map(userDetailRepository.findByUserId(user.getId()), new TypeToken<UserDetailResDTO>() {
-//                }.getType());
-//            }
-
             RefreshTokenDTO refreshTokenDTO = refreshTokenService.createRefreshToken(userName);
 
-            return AuthenticationResDTO.builder()
-                    .id(user.getId())
-                    .userName(user.getUsername())
-                    .status(user.getStatus())
-                    .role(user.getRole())
-//                    .createBy(user.getCreateBy())
-//                    .createDate(user.getCreateDate())
-//                    .updateBy(user.getUpdateBy())
-//                    .updateDate(user.getUpdateDate())
+            return TokenResDTO.builder()
+                    .userId(user.getId())
                     .accessToken(jwt)
                     .token(refreshTokenDTO.getToken())
-//                    .userDetail(userDetail)
                     .build();
         }
 

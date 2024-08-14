@@ -81,6 +81,19 @@ public class UserController extends AbstractCommon{
 
         return ResponseEntity.ok(response);
     }
+    
+    @GetMapping("/getUserByUserId")
+    public ResponseEntity<ApiResponse> getUserByUserId(HttpServletRequest request, @RequestParam(name = "userId") Long userId) throws Exception {
+        ApiResponse response;
+
+        try {
+            response = getOkResponseData(userService.getUserByUserId(userId));
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+
+        return ResponseEntity.ok(response);
+    }
 
     @GetMapping("/getCustomerAll")
     public ResponseEntity<ApiResponse> getCustomerAll(HttpServletRequest request) throws Exception {

@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.it.reservation.dto.request.UserDetailReqDTO;
+import com.it.reservation.dto.response.AuthenticationResDTO;
 import com.it.reservation.dto.response.UserDetailResDTO;
 import com.it.reservation.entities.AuthenticationEntities;
 import com.it.reservation.entities.UserDetailEntities;
@@ -213,6 +214,28 @@ public class UserServiceImpl implements UserService{
         }
 
         return resp;
+	}
+
+	@Override
+	public AuthenticationResDTO getUserByUserId(Long userId) throws Exception {
+
+        if (null != userId) {
+        	Optional<AuthenticationEntities> authenticationEntities = authenticationRepository.findById(userId);
+        	if(authenticationEntities.isPresent()) {
+        		UserDetailEntities userDtEntities = userDeatilRepository.findByUserId(userId);
+        		
+        		return 
+        				AuthenticationResDTO.builder()
+        					.id(authenticationEntities.get().getId())
+        					.status(authenticationEntities.get().getStatus())
+        					.role(authenticationEntities.get().getRole())
+        					.userDetail(mapper.map(userDtEntities, new TypeToken<UserDetailResDTO>() {
+        						}.getType())).build();
+        	}
+
+        }
+
+        return null;
 	}
 
 }

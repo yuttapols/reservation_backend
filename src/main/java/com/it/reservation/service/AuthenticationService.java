@@ -1,8 +1,8 @@
 package com.it.reservation.service;
 
-import com.it.reservation.dto.response.AuthenticationResDTO;
+import com.it.reservation.dto.response.TokenResDTO;
 
 public interface AuthenticationService {
 
-	public AuthenticationResDTO login(String userName, String password) throws Exception;
+	public TokenResDTO login(String userName, String password) throws Exception;
 }

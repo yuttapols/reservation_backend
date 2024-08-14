@@ -12,4 +12,6 @@ public interface JwtService {
 	boolean isTokenValid(String token, UserDetails userDetails);
 	
 	public Authentication getAuthentication(String token);
+	
+	public Boolean validate(String tokenAsString);
 }

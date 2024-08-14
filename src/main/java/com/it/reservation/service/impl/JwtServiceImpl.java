@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -15,7 +16,9 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import com.it.reservation.repository.AuthenticationRepository;
 import com.it.reservation.service.JwtService;
+import com.it.reservation.service.RefreshTokenService;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -30,7 +33,14 @@ public class JwtServiceImpl implements JwtService{
 
 	private String jwtSigningKey = "413F4428472B4B6250655368566D5970337336763979244226452948404D6351";
 	
-	public static final long JWT_TOKEN_VALIDITY =  60 * 60 * 24; // 1 Day Token Expire
+	public static final long JWT_TOKEN_VALIDITY =  1 * 60; // 1 MIN Token Expire
+	
+    @Autowired
+    RefreshTokenService refreshTokenService;
+    
+    @Autowired
+    AuthenticationRepository authenticationRepository;
+
 
 	@Override
 	public String extractUserName(String token) {
@@ -61,7 +71,7 @@ public class JwtServiceImpl implements JwtService{
 	}
 
 	private boolean isTokenExpired(String token) {
-		return extractExpiration(token).before(new Date());
+		return extractExpiration(token).before(new Date());	
 	}
 
 	private Date extractExpiration(String token) {
@@ -87,4 +97,15 @@ public class JwtServiceImpl implements JwtService{
 
         return new UsernamePasswordAuthenticationToken(principal, token, authorities);
     }
+	
+	@Override
+	public Boolean validate(final String tokenAsString) {
+	    try {
+	    	
+	    	Jwts.parserBuilder().setSigningKey(getSigningKey()).build().parseClaimsJws(tokenAsString).getBody();
+	    	return true;
+	    } catch (Exception e) {
+	    	return false;
+	    }
+	}
 }

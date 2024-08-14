@@ -9,14 +9,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.it.reservation.common.AbstractCommon;
-import com.it.reservation.dto.response.JwtResponseDTO;
 import com.it.reservation.dto.response.RefreshTokenDTO;
+import com.it.reservation.dto.response.TokenResDTO;
 import com.it.reservation.payload.ApiResponse;
 import com.it.reservation.repository.AuthenticationRepository;
 import com.it.reservation.service.AuthenticationService;
 import com.it.reservation.service.JwtService;
 import com.it.reservation.service.RefreshTokenService;
 import com.it.reservation.util.AppConstants;
+
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -50,7 +51,7 @@ public class AuthenticationController extends AbstractCommon{
     }
 
     @GetMapping("/refreshToken")
-    public JwtResponseDTO refreshToken(@RequestParam(name = "token") String token) {
+    public TokenResDTO refreshToken(@RequestParam(name = "token") String token) {
 
         RefreshTokenDTO refreshTokenDTO = refreshTokenService.findByToken(token);
 
@@ -59,7 +60,8 @@ public class AuthenticationController extends AbstractCommon{
             if (ObjectUtils.isNotEmpty(refreshTokenDTO)) {
                 var user = authenticationRepository.findById(refreshTokenDTO.getUserId()).orElseThrow(() -> new IllegalArgumentException("Invalid email or password."));
                 var jwt = jwtService.generateToken(user);
-                return JwtResponseDTO.builder()
+                return TokenResDTO.builder()
+                		.userId(user.getId())
                         .accessToken(jwt)
                         .token(token).build();
             }
@@ -67,6 +69,6 @@ public class AuthenticationController extends AbstractCommon{
             throw new RuntimeException("Refresh Token is not in DB..!!");
         }
 
-        return JwtResponseDTO.builder().build();
+        return TokenResDTO.builder().build();
     }
 }

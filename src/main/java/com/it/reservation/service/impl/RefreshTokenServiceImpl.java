@@ -33,7 +33,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService{
 	@Autowired
 	private ModelMapper mapper;
 	
-	private Integer tokenExpiryMinutes = 60;
+	private Integer tokenExpiryMinutes = 60 * 24 ;// 1 Day;
 	
 	@Override
 	public RefreshTokenDTO findByToken(String token) {
