@@ -206,17 +206,18 @@ public class UserServiceImpl implements UserService{
 	@Override
 	@Transactional(readOnly = true)
 	public String checkUsreName(String userName) throws Exception {
-        String resp = "0";
+        String resp = Constants.STATUS_CODE_SUCESS;
 
         Optional<AuthenticationEntities> authen = authenticationRepository.findByUserName(userName);
         if (authen.isPresent()) {
-            resp = "99";
+            resp = Constants.STATUS_CODE_UNSUCESS;
         }
 
         return resp;
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public AuthenticationResDTO getUserByUserId(Long userId) throws Exception {
 
         if (null != userId) {

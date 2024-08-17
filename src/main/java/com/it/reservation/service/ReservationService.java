@@ -23,11 +23,7 @@ public interface ReservationService {
 	
 	public String checkMaximumCancelRev(Long userId) throws Exception;
 	
-	// History
-	
-	public List<ReservationResDTO> getRevHistoryByUserId(Long userId) throws Exception;
-	
-	public List<ReservationResDTO> getRevHistoryAll() throws Exception;
+	public Integer getRevByStatusWaiting() throws Exception;
 	
 	// Seat Type
 	

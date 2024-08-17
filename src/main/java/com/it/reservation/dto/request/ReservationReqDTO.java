@@ -6,4 +6,5 @@ import lombok.Data;
 public class ReservationReqDTO {
 	private Long userId;
 	private Long seatTypeId;
+	private String revStatus;
 }
