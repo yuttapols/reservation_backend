@@ -11,7 +11,7 @@ public interface ReservationService {
 	
 	public ReservationResDTO getRevById(Long revId) throws Exception;
 
-	public ReservationResDTO getRevByUserId(Long userId) throws Exception;
+	public ReservationResDTO getRevByUserIdStatusWaiting(Long userId) throws Exception;
 	
 	public List<ReservationResDTO> getRevAll() throws Exception;
 	

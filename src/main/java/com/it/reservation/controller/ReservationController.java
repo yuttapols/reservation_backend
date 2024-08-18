@@ -41,12 +41,12 @@ public class ReservationController extends AbstractCommon{
         return ResponseEntity.ok(response);
     }
     
-    @GetMapping("/getRevByUserId")
-    public ResponseEntity<ApiResponse> getRevByUserId(HttpServletRequest request, @RequestParam(name = "userId") Long userId) throws Exception {
+    @GetMapping("/getRevByUserIdStatusWaiting")
+    public ResponseEntity<ApiResponse> getRevByUserIdStatusWaiting(HttpServletRequest request, @RequestParam(name = "userId") Long userId) throws Exception {
         ApiResponse response;
 
         try {
-            response = getOkResponseData(reservationService.getRevByUserId(userId));
+            response = getOkResponseData(reservationService.getRevByUserIdStatusWaiting(userId));
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }

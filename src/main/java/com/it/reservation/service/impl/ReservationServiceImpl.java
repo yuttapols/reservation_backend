@@ -60,7 +60,7 @@ public class ReservationServiceImpl implements ReservationService{
 
 	@Override
 	@Transactional(readOnly = true)
-	public ReservationResDTO getRevByUserId(Long userId) throws Exception {
+	public ReservationResDTO getRevByUserIdStatusWaiting(Long userId) throws Exception {
 		ReservationResDTO resp = null;
 		
 		if(null != userId) {
