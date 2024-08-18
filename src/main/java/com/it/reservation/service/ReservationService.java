@@ -25,6 +25,10 @@ public interface ReservationService {
 	
 	public Integer getRevByStatusWaiting() throws Exception;
 	
+	public List<ReservationResDTO> getAllRevByUserId(Long userId) throws Exception;
+	
+	public List<ReservationResDTO> getAllRevByStatusWaiting() throws Exception;
+	
 	// Seat Type
 	
 	public List<SeatTypeResDTO> getSeatTypeAll() throws Exception;

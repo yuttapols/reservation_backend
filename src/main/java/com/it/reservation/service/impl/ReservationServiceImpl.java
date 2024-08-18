@@ -171,12 +171,17 @@ public class ReservationServiceImpl implements ReservationService{
 	@Transactional(readOnly = true)
 	public Map<String, Integer> getRevNoCal() {
 
+		
+		String revNoBefore1Day = reservationRepository.findRevNoBeforeDay(DateUtil.createDateTime(-1));
+		
 		for(String revNo : Constants.RESERVATION.REV_NO_ALL) {
-			Integer revCount = reservationRepository.findMaxUsedRevNoInDay(revNo);
-			if(Constants.RESERVATION.REV_MAXIMUM >= revCount) {
-				Map<String, Integer> map = new HashMap<String, Integer>();
-				map.put(revNo, (revCount+1));
-				return map;
+			if(!revNo.equalsIgnoreCase(revNoBefore1Day)) {
+				Integer revCount = reservationRepository.findMaxUsedRevNoInDay(revNo);
+				if(Constants.RESERVATION.REV_MAXIMUM >= revCount) {
+					Map<String, Integer> map = new HashMap<String, Integer>();
+					map.put(revNo, (revCount+1));
+					return map;
+				}
 			}
 		}
 		return new HashMap<String, Integer>();
@@ -195,6 +200,32 @@ public class ReservationServiceImpl implements ReservationService{
 	public Integer getRevByStatusWaiting() throws Exception {
 
 		return reservationRepository.findUserStatusWaitingAll();
+	}
+
+	@Override
+	public List<ReservationResDTO> getAllRevByUserId(Long userId) throws Exception {
+		List<ReservationResDTO> respAll = null;
+		
+		List<ReservationEntities> revAll =  reservationRepository.findByByUserId(userId);
+		if(CollectionUtils.isNotEmpty(revAll)) {
+			respAll = mapper.map(revAll, new TypeToken<List<ReservationResDTO>>() {
+			}.getType());
+		}
+		
+		return respAll;
+	}
+
+	@Override
+	public List<ReservationResDTO> getAllRevByStatusWaiting() throws Exception {
+		List<ReservationResDTO> respAll = null;
+		
+		List<ReservationEntities> revAll =  reservationRepository.findByStatusWaiting();
+		if(CollectionUtils.isNotEmpty(revAll)) {
+			respAll = mapper.map(revAll, new TypeToken<List<ReservationResDTO>>() {
+			}.getType());
+		}
+		
+		return respAll;
 	}
     
     

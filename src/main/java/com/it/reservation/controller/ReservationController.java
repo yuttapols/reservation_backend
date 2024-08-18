@@ -150,4 +150,30 @@ public class ReservationController extends AbstractCommon{
 
         return ResponseEntity.ok(response);
     }
+    
+    @GetMapping("/getAllRevByUserId")
+    public ResponseEntity<ApiResponse> getAllRevByUserId(HttpServletRequest request, @RequestParam(name = "userId") Long userId) throws Exception {
+        ApiResponse response;
+
+        try {
+            response = getOkResponseData(reservationService.getAllRevByUserId(userId));
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+
+        return ResponseEntity.ok(response);
+    }
+    
+    @GetMapping("/getAllRevByStatusWaiting")
+    public ResponseEntity<ApiResponse> getAllRevByStatusWaiting(HttpServletRequest request) throws Exception {
+        ApiResponse response;
+
+        try {
+            response = getOkResponseData(reservationService.getAllRevByStatusWaiting());
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+
+        return ResponseEntity.ok(response);
+    }
 }
