@@ -1,7 +1,6 @@
 package com.it.reservation.entities;
 
 
-
 import java.sql.Timestamp;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -20,34 +19,25 @@ import lombok.Data;
 
 @Entity
 @Data
-@Table(name = "reservation")
-public class ReservationHistoryEntities {
-	
+@Table(name = "reason_cancel")
+public class ReasonCancelEntities {
+
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
+	@Column(name = "reason_name_th", length = 50)
+    private String reasonNameTh;
 	
-	@Column(name = "user_id")
-    private Long userId;
+	@Column(name = "reason_name_en", length = 50)
+    private String reasonNameEn;
 	
-	@Column(name = "rev_history_no", length = 3)
-    private String revHistoryNo;
-	
-	@Column(name = "rev_history_no_number", length = 5)
-    private Long revHistoryNoNumber;
-	
-	@Column(name = "seat_type_id", length = 5)
-    private Long seatTypeId;
-	
-    @Temporal(TemporalType.TIMESTAMP)
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    @Column(name = "rev_history_time")
-    private Timestamp revHistoryTime;
-	
-	
-	@Column(name = "rev_history_status", length = 1)
-    private String revHistoryStatus;
+	@Column(name = "reason_desc", length = 100)
+    private String reasonDesc;
+
+	@Column(name = "status", length = 1)
+    private String status;
 	
 	@Column(name = "create_by", length = 50)
     private String createBy;

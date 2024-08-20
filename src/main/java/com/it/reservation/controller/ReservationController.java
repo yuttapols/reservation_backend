@@ -176,4 +176,17 @@ public class ReservationController extends AbstractCommon{
 
         return ResponseEntity.ok(response);
     }
+    
+    @GetMapping("/getReasonCancelAll")
+    public ResponseEntity<ApiResponse> getReasonCancelAll(HttpServletRequest request) throws Exception {
+        ApiResponse response;
+
+        try {
+            response = getOkResponseData(reservationService.getReasonCancelAll());
+        } catch (Exception e) {
+            throw new Exception(e.getMessage());
+        }
+
+        return ResponseEntity.ok(response);
+    }
 }

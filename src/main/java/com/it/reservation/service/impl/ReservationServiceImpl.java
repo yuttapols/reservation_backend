@@ -1,6 +1,6 @@
 package com.it.reservation.service.impl;
 
-import java.util.HashMap;
+import 	java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -15,12 +15,14 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.it.reservation.dto.request.ReservationReqDTO;
+import com.it.reservation.dto.response.ReasonCancelResDTO;
 import com.it.reservation.dto.response.ReservationResDTO;
 import com.it.reservation.dto.response.SeatTypeResDTO;
+import com.it.reservation.entities.ReasonCancelEntities;
 import com.it.reservation.entities.ReservationEntities;
 import com.it.reservation.entities.SeatTypeEntities;
 import com.it.reservation.payload.CustomerUserAttr;
-import com.it.reservation.repository.ReservationHistoryRepository;
+import com.it.reservation.repository.ReasonCancelRepository;
 import com.it.reservation.repository.ReservationRepository;
 import com.it.reservation.repository.SeatTypeRepository;
 import com.it.reservation.service.ReservationService;
@@ -38,10 +40,10 @@ public class ReservationServiceImpl implements ReservationService{
     ReservationRepository reservationRepository;
     
     @Autowired
-    ReservationHistoryRepository reservationHistoryRepository;
+    SeatTypeRepository seatTypeRepository;
     
     @Autowired
-    SeatTypeRepository seatTypeRepository;
+    ReasonCancelRepository reasonCancelRepository;
 
 	@Override
 	@Transactional(readOnly = true)
@@ -125,6 +127,9 @@ public class ReservationServiceImpl implements ReservationService{
 			if(revOpt.isPresent()) {
 				ReservationEntities revEntities = revOpt.get();
 				revEntities.setRevStatus(req.getRevStatus());
+				if(Constants.RESERVATION.REV_STATUS_USER_CANCEL.equalsIgnoreCase(req.getRevStatus())) {
+					revEntities.setReasonCancelId(req.getReasonCancelId());
+				}
 				revEntities.setUpdateBy(userAttr.getCustomerNo());
 				revEntities.setUpdateDate(DateUtil.createTimestmapNow());
 				revEntities = reservationRepository.saveAndFlush(revEntities);
@@ -146,7 +151,7 @@ public class ReservationServiceImpl implements ReservationService{
 	public String checkMaximumCancelRev(Long userId) throws Exception {
 		String resp = Constants.STATUS_CODE_SUCESS;
 		
-		if(Constants.RESERVATION.REV_CANCEL_MAXIMUM < reservationRepository.findMaxCancelByUserIdInDay(userId)) {
+		if(Constants.RESERVATION.REV_CANCEL_MAXIMUM <= reservationRepository.findMaxCancelByUserIdInDay(userId)) {
 			resp = Constants.STATUS_CODE_UNSUCESS;
 		}
 		
@@ -203,6 +208,7 @@ public class ReservationServiceImpl implements ReservationService{
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<ReservationResDTO> getAllRevByUserId(Long userId) throws Exception {
 		List<ReservationResDTO> respAll = null;
 		
@@ -210,18 +216,51 @@ public class ReservationServiceImpl implements ReservationService{
 		if(CollectionUtils.isNotEmpty(revAll)) {
 			respAll = mapper.map(revAll, new TypeToken<List<ReservationResDTO>>() {
 			}.getType());
+			
+			if(CollectionUtils.isNotEmpty(respAll)) {
+				List<ReasonCancelEntities> reasonCancelAll =  reasonCancelRepository.findAll();
+				List<SeatTypeEntities> seatTypeAll = seatTypeRepository.findAll();
+				for(ReservationResDTO object: respAll) {
+					if(null != object.getReasonCancelId()) {
+						String name = reasonCancelAll.stream().filter(x-> x.getId().compareTo(object.getId()) == 0).map(m-> m.getReasonNameTh()).findFirst().orElse(null);
+						object.setReasonNameTh(name);
+					}
+					if(null != object.getSeatTypeId()) {
+						String name = seatTypeAll.stream().filter(x-> x.getId().compareTo(object.getSeatTypeId()) == 0).map(m-> m.getSeatTypeNameTh().concat(" "+m.getSeatTypeUnit())).findFirst().orElse(null);
+						object.setSeatTypeName(name);
+					}
+				}
+			}
 		}
 		
 		return respAll;
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<ReservationResDTO> getAllRevByStatusWaiting() throws Exception {
 		List<ReservationResDTO> respAll = null;
 		
 		List<ReservationEntities> revAll =  reservationRepository.findByStatusWaiting();
 		if(CollectionUtils.isNotEmpty(revAll)) {
 			respAll = mapper.map(revAll, new TypeToken<List<ReservationResDTO>>() {
+			}.getType());
+			
+		}
+		
+		return respAll;
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public List<ReasonCancelResDTO> getReasonCancelAll() throws Exception {
+		
+		
+		List<ReasonCancelResDTO> respAll = null;
+		
+		List<ReasonCancelEntities> reasonCancelAll =  reasonCancelRepository.findAll();
+		if(CollectionUtils.isNotEmpty(reasonCancelAll)) {
+			respAll = mapper.map(reasonCancelAll, new TypeToken<List<ReasonCancelResDTO>>() {
 			}.getType());
 		}
 		

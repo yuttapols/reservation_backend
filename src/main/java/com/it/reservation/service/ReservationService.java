@@ -3,6 +3,7 @@ package com.it.reservation.service;
 import java.util.List;
 
 import com.it.reservation.dto.request.ReservationReqDTO;
+import com.it.reservation.dto.response.ReasonCancelResDTO;
 import com.it.reservation.dto.response.ReservationResDTO;
 import com.it.reservation.dto.response.SeatTypeResDTO;
 import com.it.reservation.payload.CustomerUserAttr;
@@ -30,8 +31,10 @@ public interface ReservationService {
 	public List<ReservationResDTO> getAllRevByStatusWaiting() throws Exception;
 	
 	// Seat Type
-	
 	public List<SeatTypeResDTO> getSeatTypeAll() throws Exception;
+	
+	// Reason
+	public List<ReasonCancelResDTO> getReasonCancelAll() throws Exception;
 	
 	
 }

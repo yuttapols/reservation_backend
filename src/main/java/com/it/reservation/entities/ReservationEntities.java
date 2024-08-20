@@ -31,6 +31,9 @@ public class ReservationEntities {
 	@Column(name = "user_id")
     private Long userId;
 	
+	@Column(name = "reason_cancel_id")
+    private Long reasonCancelId;
+	
 	@Column(name = "rev_no", length = 3)
     private String revNo;
 	

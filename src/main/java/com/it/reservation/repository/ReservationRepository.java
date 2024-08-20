@@ -31,9 +31,9 @@ public interface ReservationRepository extends JpaRepository<ReservationEntities
 	@Query("select t from ReservationEntities t where t.revStatus = '1' order by t.revTime ")
 	public List<ReservationEntities> findByStatusWaiting();
 	
-	@Query("select t from ReservationEntities t where t.userId = ?1 order by t.revTime ")
+	@Query("select t from ReservationEntities t where t.userId = ?1 order by t.revTime desc ")
 	public List<ReservationEntities> findByByUserId(Long userId);
 	
-	@Query("select distinct t.revNo from ReservationEntities t where DATE(t.revTime) = ?1")
+	@Query("select distinct t.revNo from ReservationEntities t where DATE(t.revTime) = ?1 ORDER BY t.revNo DESC LIMIT 1")
 	public String findRevNoBeforeDay(Date currenDateInt1Day);
 }
