@@ -43,4 +43,11 @@ public class Constants {
         
 
     }
+    
+    public final class REPORT {
+        public static final String TYPE_STATUS_ALL = "ALL";
+        public static final String TYPE_STATUS_SUCCESS = "SUCCESS";
+        public static final String TYPE_STATUS_CANCEL = "CANCEL";
+        public static final String PATH_FOLDER_REPORT_EXCEL = "report/excel/template";
+    }
 }

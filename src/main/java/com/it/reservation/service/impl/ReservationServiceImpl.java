@@ -82,8 +82,22 @@ public class ReservationServiceImpl implements ReservationService{
 		
 		List<ReservationEntities> revAll =  reservationRepository.findAll();
 		if(CollectionUtils.isNotEmpty(revAll)) {
-			revAll = mapper.map(revAll, new TypeToken<List<ReservationResDTO>>() {
+			respAll = mapper.map(revAll, new TypeToken<List<ReservationResDTO>>() {
 			}.getType());
+			if(CollectionUtils.isNotEmpty(respAll)) {
+				List<ReasonCancelEntities> reasonCancelAll =  reasonCancelRepository.findAll();
+				List<SeatTypeEntities> seatTypeAll = seatTypeRepository.findAll();
+				for(ReservationResDTO object: respAll) {
+					if(null != object.getReasonCancelId()) {
+						String name = reasonCancelAll.stream().filter(x-> x.getId().compareTo(object.getId()) == 0).map(m-> m.getReasonNameTh()).findFirst().orElse(null);
+						object.setReasonNameTh(name);
+					}
+					if(null != object.getSeatTypeId()) {
+						String name = seatTypeAll.stream().filter(x-> x.getId().compareTo(object.getSeatTypeId()) == 0).map(m-> m.getSeatTypeNameTh().concat(" "+m.getSeatTypeUnit())).findFirst().orElse(null);
+						object.setSeatTypeName(name);
+					}
+				}
+			}
 		}
 		
 		return respAll;
@@ -245,7 +259,20 @@ public class ReservationServiceImpl implements ReservationService{
 		if(CollectionUtils.isNotEmpty(revAll)) {
 			respAll = mapper.map(revAll, new TypeToken<List<ReservationResDTO>>() {
 			}.getType());
-			
+			if(CollectionUtils.isNotEmpty(respAll)) {
+				List<ReasonCancelEntities> reasonCancelAll =  reasonCancelRepository.findAll();
+				List<SeatTypeEntities> seatTypeAll = seatTypeRepository.findAll();
+				for(ReservationResDTO object: respAll) {
+					if(null != object.getReasonCancelId()) {
+						String name = reasonCancelAll.stream().filter(x-> x.getId().compareTo(object.getId()) == 0).map(m-> m.getReasonNameTh()).findFirst().orElse(null);
+						object.setReasonNameTh(name);
+					}
+					if(null != object.getSeatTypeId()) {
+						String name = seatTypeAll.stream().filter(x-> x.getId().compareTo(object.getSeatTypeId()) == 0).map(m-> m.getSeatTypeNameTh().concat(" "+m.getSeatTypeUnit())).findFirst().orElse(null);
+						object.setSeatTypeName(name);
+					}
+				}
+			}
 		}
 		
 		return respAll;
